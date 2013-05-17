@@ -22,7 +22,7 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 	void flameoff(){
 		shifter.setPin(0, LOW); shifter.write(); }
 	
-	
+
 // SERVER SETUP
 EthernetServer server = EthernetServer(1337);
 	//Some ethernet config
@@ -33,18 +33,6 @@ EthernetServer server = EthernetServer(1337);
 	// byte subnet[] = { 255, 255, 255, 0 };
 	
 // IPAddress ip(192,168,1,111);
-
-void connect(){
-	if (client.connect(server, 1337)) {
-		connected = true;
-    Serial.println("connected");
-    client.println("GET /search?q=arduino HTTP/1.0");
-    client.println();
-  } else {
-		connected = false;
-    Serial.println("connection failed");
-  }
-}
 
 void setup()
 {
@@ -64,32 +52,34 @@ void setup()
 
 void loop(){
 	
+	//set all pins on the shift register chain to LOW
+	shifter.clear(); 
+	
+	//check for clients
 	EthernetClient client = server.available();
 	
-  if (client == true) {
-    // read bytes from the incoming client and write them back
-    // to any clients connected to the server:
-    server.write(client.read());
+  if (client) {
+		while (client.connected()) {
+      if (client.available()) {
+				char c = client.read();
+		    Serial.print(c);
+				client.write(c);
+				
+				if(c == '0') {flame = false;}
+				if(c == '1') {flame = true;interval = 30;}
+				if(c == '2') {flame = true;interval = 85;}
+				if(c == '3') {flame = true;interval = 140;}
+				if(c == '4') {flame = true;interval = 200;}
+				if(c == '5') {flame = true;interval = 300;}
+				if(c == '6') {flame = true;interval = 410;}
+				if(c == '7') {flame = true;interval = 580;}
+				if(c == '8') {flame = true;interval = 750;}
+				if(c == '9') {flame = true;interval = 1111;}
+			}
+		}
   }
 
 	// if(connected == false) { connect(); delay(5000); }
- 	
-	shifter.clear(); //set all pins on the shift register chain to LOW
-
-  if (server.available()) {
-    char c = client.read();
-    Serial.print(c);
-		if(c == '0') {flame = false;}
-		if(c == '1') {flame = true;interval = 30;}
-		if(c == '2') {flame = true;interval = 85;}
-		if(c == '3') {flame = true;interval = 140;}
-		if(c == '4') {flame = true;interval = 200;}
-		if(c == '5') {flame = true;interval = 300;}
-		if(c == '6') {flame = true;interval = 410;}
-		if(c == '7') {flame = true;interval = 580;}
-		if(c == '8') {flame = true;interval = 750;}
-		if(c == '9') {flame = true;interval = 1111;}
-  }
 
 	if(flame = true) {
 		flameon();
