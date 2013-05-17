@@ -11,8 +11,10 @@
 //initaize shifter using the Shifter library
 Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS); 
 	// Shifter Helper functions
-	void flameon(){shifter.setPin(1, HIGH);}
-	void flameoff(){shifter.setPin(1, LOW);}
+	void flameon(){
+		shifter.setPin(1, HIGH);shifter.write(); }
+	void flameoff(){
+		shifter.setPin(1, LOW);shifter.write(); }
 	
 EthernetClient client;
 	//Some ethernet config
