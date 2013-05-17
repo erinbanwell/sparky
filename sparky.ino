@@ -23,7 +23,7 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 	
 EthernetClient client;
 	//Some ethernet config
-	byte mac[] = { 0x06, 0xF7, 0x2B, 0x0D, 0x77, 0x72 };
+	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 	byte ip[] = { 192, 168, 1, 111 };
 	byte server[] = { 192, 168, 1, 101 }; //Sean
 
@@ -43,6 +43,8 @@ void setup()
 {
   Ethernet.begin(mac, ip);
   Serial.begin(9600);
+
+	
 
   delay(1000);
 
@@ -86,10 +88,8 @@ void loop(){
     Serial.println();
     Serial.println("disconnecting.");
     client.stop();
-    for(;;)
-      ;
+    // for(;;)
+    //   ;
   }
-
-	return true;
  
 }
