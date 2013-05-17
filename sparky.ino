@@ -28,7 +28,7 @@ EthernetClient client;
 	byte server[] = { 192, 168, 1, 101 }; //Sean
 
 void connect(){
-	if (client.connect(server, 80)) {
+	if (client.connect(server, 1337)) {
 		connected = true;
     Serial.println("connected");
     client.println("GET /search?q=arduino HTTP/1.0");
