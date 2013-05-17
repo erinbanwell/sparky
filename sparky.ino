@@ -22,10 +22,15 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 		shifter.setPin(0, LOW); shifter.write(); }
 	
 EthernetClient client;
+
 	//Some ethernet config
 	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 	byte ip[] = { 192, 168, 1, 111 };
 	byte server[] = { 192, 168, 1, 101 }; //Sean
+	byte gateway[] = { 192, 168, 1, 254 };
+	byte subnet[] = { 255, 255, 255, 0 };
+	
+IPAddress ip(192,168,1,111);
 
 void connect(){
 	if (client.connect(server, 1337)) {
@@ -41,10 +46,9 @@ void connect(){
 
 void setup()
 {
-  Ethernet.begin(mac, ip);
-  Serial.begin(9600);
+  Ethernet.begin(mac);
 
-	
+  Serial.begin(9600);
 
   delay(1000);
 
