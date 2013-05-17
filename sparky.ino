@@ -66,6 +66,7 @@ void loop(){
 	if(flame = true) {
 		flameon();
 		delay(interval);
+		
 		flameoff();
 		delay(interval);
 	}
