@@ -24,7 +24,7 @@ EthernetClient client;
 	//Some ethernet config
 	byte mac[] = { 0x06, 0xF7, 0x2B, 0x0D, 0x77, 0x72 };
 	byte ip[] = { 192, 168, 1, 111 };
-	byte server[] = { 192, 168, 1, 222 }; // Google
+	byte server[] = { 192, 168, 1, 101 }; //Sean
 
 void setup()
 {
