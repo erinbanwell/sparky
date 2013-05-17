@@ -5,12 +5,7 @@
 #define SER_Pin 5 //SER_IN
 #define RCLK_Pin 3 //L_CLOCK
 #define SRCLK_Pin 2 //CLOCK
-
 #define NUM_REGISTERS 1 //how many registers are in the chain
-
-bool flame = false;
-bool interval = 100;
-bool connected = false;
 
 // SHIFTER SETUP
 //initaize shifter using the Shifter library
@@ -18,8 +13,11 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 
 // SERVER SETUP
 EthernetServer server = EthernetServer(1337);
-
 	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+		
+bool flame = false;
+bool interval = 100;
+bool connected = false;
 	
 
 // Shifter Helper functions
@@ -35,7 +33,6 @@ void setup()
   Ethernet.begin(mac);
   delay(1000);
  	server.begin();
-	// connect();
 }
 
 void loop(){
@@ -49,9 +46,10 @@ void loop(){
   if (client) {
 		while (client.connected()) {
       if (client.available()) {
+	
 				char c = client.read();
-		    Serial.print(c);
-				client.write(c);
+		    // Serial.print(c);
+				// client.write(c);
 				
 				if(c == '0') {flame = false;}
 				if(c == '1') {flame = true;interval = 30;}
@@ -64,8 +62,11 @@ void loop(){
 				if(c == '8') {flame = true;interval = 750;}
 				if(c == '9') {flame = true;interval = 1111;}
 				
+				client.write(interval);
+				
 			}
 		}
+		client.stop();
   }
 
 	if(flame = true) {
