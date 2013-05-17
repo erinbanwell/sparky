@@ -18,7 +18,7 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 	
 EthernetClient client;
 	//Some ethernet config
-	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+	byte mac[] = { 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA };
 	byte ip[] = { 10, 0, 0, 177 };
 	byte server[] = { 64, 233, 187, 99 }; // Google
 
