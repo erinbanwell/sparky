@@ -16,37 +16,25 @@ bool connected = false;
 //initaize shifter using the Shifter library
 Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS); 
 
-	// Shifter Helper functions
-	void flameon(){
-		shifter.setPin(0, HIGH); shifter.write(); }
-	void flameoff(){
-		shifter.setPin(0, LOW); shifter.write(); }
-	
-
 // SERVER SETUP
 EthernetServer server = EthernetServer(1337);
-	//Some ethernet config
-	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-	// byte ip[] = { 192, 168, 1, 111 };
-	// byte server[] = { 192, 168, 1, 101 }; //Sean
-	// byte gateway[] = { 192, 168, 1, 254 };
-	// byte subnet[] = { 255, 255, 255, 0 };
-	
-// IPAddress ip(192,168,1,111);
 
+	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+	
+
+// Shifter Helper functions
+void flameon(){
+	shifter.setPin(0, HIGH); shifter.write(); }
+void flameoff(){
+	shifter.setPin(0, LOW); shifter.write(); }
+
+//Ethernet and Shifter Setup.
 void setup()
 {
-	
+	// Serial.begin(9600);	
   Ethernet.begin(mac);
-
-  // Serial.begin(9600);
-
   delay(1000);
-
-  // Serial.println("connecting...");
-
  	server.begin();
-
 	// connect();
 }
 
@@ -79,24 +67,11 @@ void loop(){
 		}
   }
 
-	// if(connected == false) { connect(); delay(5000); }
-
 	if(flame = true) {
-		flameon();
-		delay(interval);
-		
-		flameoff();
-		delay(interval);
+		flameon(); delay(interval);
+		flameoff(); delay(interval);
 	}
 
 	if(flame = false) {flameoff();delay(interval);}
-
-  // if (!client.connected()) {
-  //    Serial.println();
-  //    Serial.println("disconnecting.");
-  //    client.stop();
-  //    // for(;;)
-  //    //   ;
-  //  }
  
 }
