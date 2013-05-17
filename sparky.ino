@@ -12,6 +12,7 @@ bool flame = false;
 bool interval = 100;
 bool connected = false;
 
+// SHIFTER SETUP
 //initaize shifter using the Shifter library
 Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS); 
 
@@ -21,14 +22,15 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 	void flameoff(){
 		shifter.setPin(0, LOW); shifter.write(); }
 	
-EthernetClient client;
-
+	
+// SERVER SETUP
+EthernetServer server = EthernetServer(1337);
 	//Some ethernet config
 	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-	byte ip[] = { 192, 168, 1, 111 };
-	byte server[] = { 192, 168, 1, 101 }; //Sean
-	byte gateway[] = { 192, 168, 1, 254 };
-	byte subnet[] = { 255, 255, 255, 0 };
+	// byte ip[] = { 192, 168, 1, 111 };
+	// byte server[] = { 192, 168, 1, 101 }; //Sean
+	// byte gateway[] = { 192, 168, 1, 254 };
+	// byte subnet[] = { 255, 255, 255, 0 };
 	
 // IPAddress ip(192,168,1,111);
 
@@ -46,24 +48,35 @@ void connect(){
 
 void setup()
 {
+	
   Ethernet.begin(mac);
 
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   delay(1000);
 
-  Serial.println("connecting...");
+  // Serial.println("connecting...");
 
-	connect();
+ 	server.begin();
+
+	// connect();
 }
 
 void loop(){
 	
-	if(connected == false) { connect(); delay(5000); }
+	EthernetClient client = server.available();
+	
+  if (client == true) {
+    // read bytes from the incoming client and write them back
+    // to any clients connected to the server:
+    server.write(client.read());
+  }
+
+	// if(connected == false) { connect(); delay(5000); }
  	
 	shifter.clear(); //set all pins on the shift register chain to LOW
 
-  if (client.available()) {
+  if (server.available()) {
     char c = client.read();
     Serial.print(c);
 		if(c == '0') {flame = false;}
@@ -86,14 +99,14 @@ void loop(){
 		delay(interval);
 	}
 
-	if(flame = false) {flameoff();}
+	if(flame = false) {flameoff();delay(interval);}
 
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
-    // for(;;)
-    //   ;
-  }
+  // if (!client.connected()) {
+  //    Serial.println();
+  //    Serial.println("disconnecting.");
+  //    client.stop();
+  //    // for(;;)
+  //    //   ;
+  //  }
  
 }
