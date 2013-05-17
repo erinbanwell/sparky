@@ -30,7 +30,7 @@ EthernetClient client;
 	byte gateway[] = { 192, 168, 1, 254 };
 	byte subnet[] = { 255, 255, 255, 0 };
 	
-IPAddress ip(192,168,1,111);
+// IPAddress ip(192,168,1,111);
 
 void connect(){
 	if (client.connect(server, 1337)) {
