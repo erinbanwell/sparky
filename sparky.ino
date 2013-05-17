@@ -10,6 +10,7 @@
 
 bool flame = false;
 bool interval = 100;
+bool connected = false;
 
 //initaize shifter using the Shifter library
 Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS); 
@@ -22,29 +23,39 @@ Shifter shifter(SER_Pin, RCLK_Pin, SRCLK_Pin, NUM_REGISTERS);
 	
 EthernetClient client;
 	//Some ethernet config
-	byte mac[] = { 0x06, 0xF7, 0x2B, 0x0D, 0x77, 0x72 };
+	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 	byte ip[] = { 192, 168, 1, 111 };
 	byte server[] = { 192, 168, 1, 101 }; //Sean
+
+void connect(){
+	if (client.connect(server, 1337)) {
+		connected = true;
+    Serial.println("connected");
+    client.println("GET /search?q=arduino HTTP/1.0");
+    client.println();
+  } else {
+		connected = false;
+    Serial.println("connection failed");
+  }
+}
 
 void setup()
 {
   Ethernet.begin(mac, ip);
   Serial.begin(9600);
 
+	
+
   delay(1000);
 
   Serial.println("connecting...");
 
-  if (client.connect(server, 80)) {
-    Serial.println("connected");
-    client.println("GET /search?q=arduino HTTP/1.0");
-    client.println();
-  } else {
-    Serial.println("connection failed");
-  }
+	connect();
 }
 
 void loop(){
+	
+	if(connected == false) { connect(); delay(5000); }
  	
 	shifter.clear(); //set all pins on the shift register chain to LOW
 
@@ -77,10 +88,8 @@ void loop(){
     Serial.println();
     Serial.println("disconnecting.");
     client.stop();
-    for(;;)
-      ;
+    // for(;;)
+    //   ;
   }
-
-	return true;
  
 }
