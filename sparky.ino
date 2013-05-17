@@ -24,14 +24,14 @@ EthernetServer server = EthernetServer(1337);
 
 // Shifter Helper functions
 void flameon(){
-	shifter.setPin(0, HIGH); shifter.write(); }
+	shifter.setPin(0, HIGH); shifter.write(); delay(interval); }
 void flameoff(){
-	shifter.setPin(0, LOW); shifter.write(); }
+	shifter.setPin(0, LOW); shifter.write(); delay(interval); }
 
 //Ethernet and Shifter Setup.
 void setup()
 {
-	// Serial.begin(9600);	
+	Serial.begin(9600);	
   Ethernet.begin(mac);
   delay(1000);
  	server.begin();
@@ -63,15 +63,16 @@ void loop(){
 				if(c == '7') {flame = true;interval = 580;}
 				if(c == '8') {flame = true;interval = 750;}
 				if(c == '9') {flame = true;interval = 1111;}
+				
 			}
 		}
   }
 
 	if(flame = true) {
-		flameon(); delay(interval);
-		flameoff(); delay(interval);
+		flameon();
+		flameoff();
 	}
 
-	if(flame = false) {flameoff();delay(interval);}
+	if(flame = false) {flameoff();}
  
 }
