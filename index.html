@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title></title>
+	<link rel="stylesheet" type="text/css" media="screen" href="css/master.css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+	<script>
+	  var socket = io.connect('http://localhost:8090');
+	</script>
+	<script type="text/javascript" src="js/jquery.gracefulwebsocket.js"></script>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script type="text/javascript">
+	
+		$ = jQuery.noConflict();
+		$(document).ready(function(){
+			
+			for(var i=0;i<10;i++){
+				var $input = $("<input>")
+												.attr('level', i)
+												.attr('type', 'button')
+												.bind('click', function(){
+													var level = $(this).attr('level');
+													socket.emit('message', level);
+													console.log('sent '+level);
+												})
+												.appendTo('body');
+			}
+
+			socket.on('message', function(message){
+				console.log(message);	
+				$('.duh').append(message);
+			});
+			
+		});
+	</script>
+</head>
+<body>
+	<div class="duh"></div>
+</body>
+</html>
